@@ -16,9 +16,9 @@ public class Server {
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
 
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
-        server.createContext("/", new RedirectHandler());
-        server.createContext("/home", new HomeHandler());
-        server.createContext("/call", new CallHandler());
+        server.createContext("/", new Else());
+        server.createContext("/home", new Home());
+        server.createContext("/call", new Call());
 
         server.setExecutor(threadPoolExecutor);
         server.start();
