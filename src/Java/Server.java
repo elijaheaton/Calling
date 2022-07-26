@@ -1,4 +1,6 @@
-import Handlers.*;
+package Java;
+
+import Java.Handlers.*;
 import com.sun.net.httpserver.*;
 
 import java.io.IOException;
@@ -23,7 +25,7 @@ public class Server {
         System.out.println("Listening on http://localhost:8001");
     };
 
-    //logger.info(" Server started on port 8001");
+    //logger.info(" java.Server started on port 8001");
 
     public Server() throws IOException {
         System.out.println("io exception thrown.");

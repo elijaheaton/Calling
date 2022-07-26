@@ -1,4 +1,4 @@
-package Handlers;
+package Java.Handlers;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -25,7 +25,7 @@ public class HomeHandler implements HttpHandler {
     private void handleResponse(HttpExchange httpExchange)  throws  IOException {
         // TODO: file not found exception
         // Get file
-        File file = new File("src/index.html");
+        File file = new File("src/HTML/index.html");
         Scanner scan = new Scanner(file);
 
         // Set up response builder
