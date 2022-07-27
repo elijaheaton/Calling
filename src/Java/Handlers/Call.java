@@ -22,6 +22,8 @@ public class Call implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+        // First thing's first: are they starting or joining a call?
+
         String name = getName(httpExchange);
         Headers responseHeaders = httpExchange.getResponseHeaders();
 
@@ -34,8 +36,9 @@ public class Call implements HttpHandler {
             WebcamStreamer webStream = new WebcamStreamer(8011, webcam, 1000, true);
             webStream.start();
 
-            // Add picture and name
+            // Add name and link
             map.put("name", name);
+            map.put("link", "http://localhost:8001/");
 
             // Send response
             Help.respond(httpExchange, "call", map);

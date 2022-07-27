@@ -19,6 +19,7 @@ public class Server {
         server.createContext("/", new Else());
         server.createContext("/home", new Home());
         server.createContext("/call", new Call());
+        server.createContext("/join", new Join());
 
         server.setExecutor(threadPoolExecutor);
         server.start();

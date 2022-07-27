@@ -7,10 +7,21 @@
     </head>
     <body>
         <h1>Welcome $name$</h1>
-        <b>
+        <p>
             Connect:
             <br>
             <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="http://localhost:8011/">
-        </b>
+        </p>
+        <p>
+            Send a link to a friend:
+            <button id="copy">Copy link</button>
+        </p>
     </body>
+    <script>
+        let button = document.getElementById("copy");
+        button.onclick = function() {
+            navigator.clipboard.writeText("$link$");
+            alert("Copied");
+        };
+    </script>
 </html>
