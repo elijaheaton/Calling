@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/calling.iml" filepath="$PROJECT_DIR$/calling.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Calling.iml" filepath="$PROJECT_DIR$/Calling.iml" />
     </modules>
   </component>
 </project>

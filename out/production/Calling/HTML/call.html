@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Call</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <h1>Welcome $name$</h1>
+        <p>
+            Connect:
+            <br>
+            <img style="display: block;-webkit-user-select: none;margin: auto;background-color: hsl(0, 0%, 25%);" src="http://localhost:8011/">
+        </p>
+        <p>
+            Send a link to a friend:
+            <button id="copy">Copy link</button>
+        </p>
+    </body>
+    <script>
+        let button = document.getElementById("copy");
+        button.onclick = function() {
+            navigator.clipboard.writeText("$link$");
+            alert("Copied");
+        };
+    </script>
+</html>

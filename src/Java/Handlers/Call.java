@@ -42,6 +42,8 @@ public class Call implements HttpHandler {
 
             // Send response
             Help.respond(httpExchange, "call", map);
+
+            // TODO: if they leave the call, end the video recording lol
         }
         else {
             // Redirect home
