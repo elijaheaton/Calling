@@ -5,11 +5,19 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+import com.github.sarxos.webcam.*;
+
+import javax.imageio.ImageIO;
+
 public class Call implements HttpHandler {
+
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String name = getName(httpExchange);
@@ -18,10 +26,27 @@ public class Call implements HttpHandler {
         if (name != null) {
             // They can chill with us!
             Map<String, String> map = new HashMap<>();
+
+            // Open Camera
+            Webcam webcam = Webcam.getDefault();
+            webcam.open();
+
+            // Capture single image for now
+            final ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(webcam.getImage(), "PNG", os);
+            String s = Base64.getEncoder().encodeToString(os.toByteArray());
+
+            webcam.close();
+
+            // Add picture and name
+            map.put("image", s);
             map.put("name", name);
+
+            // Send response
             Help.respond(httpExchange, "call", map);
         }
         else {
+            // Redirect home
             responseHeaders.add("Location", "/home");
             httpExchange.sendResponseHeaders(303, responseHeaders.size());
         }
