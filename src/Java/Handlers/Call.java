@@ -8,6 +8,8 @@ import com.sun.net.httpserver.HttpHandler;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -27,19 +29,12 @@ public class Call implements HttpHandler {
             // They can chill with us!
             Map<String, String> map = new HashMap<>();
 
-            // Open Camera
+            // Set up stream
             Webcam webcam = Webcam.getDefault();
-            webcam.open();
-
-            // Capture single image for now
-            final ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ImageIO.write(webcam.getImage(), "PNG", os);
-            String s = Base64.getEncoder().encodeToString(os.toByteArray());
-
-            webcam.close();
+            WebcamStreamer webStream = new WebcamStreamer(8011, webcam, 1000, true);
+            webStream.start();
 
             // Add picture and name
-            map.put("image", s);
             map.put("name", name);
 
             // Send response
