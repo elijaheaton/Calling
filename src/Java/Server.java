@@ -18,7 +18,8 @@ public class Server {
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         server.createContext("/", new Else());
         server.createContext("/home", new Home());
-        server.createContext("/call", new Call());
+        server.createContext("/call", new Call("join"));
+        server.createContext("/endCall", new Call("end"));
         server.createContext("/join", new Join());
 
         server.setExecutor(threadPoolExecutor);

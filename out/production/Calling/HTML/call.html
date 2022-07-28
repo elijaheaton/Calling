@@ -16,10 +16,16 @@
             Send a link to a friend:
             <button id="copy">Copy link</button>
         </p>
+        <p>
+            End video recording:
+            <form method="POST" action="/endCall">
+                <button id="end">End recording</button>
+            </form>
+        </p>
     </body>
     <script>
-        let button = document.getElementById("copy");
-        button.onclick = function() {
+        let copyButton = document.getElementById("copy");
+        copyButton.onclick = function() {
             navigator.clipboard.writeText("$link$");
             alert("Copied");
         };

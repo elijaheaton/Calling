@@ -20,9 +20,23 @@ import javax.imageio.ImageIO;
 
 public class Call implements HttpHandler {
 
+    private String TASK;
+    public Call(String task) {
+        this.TASK = task;
+    }
+
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         // First thing's first: are they starting or joining a call?
+
+        // Set up stream
+        Webcam webcam = Webcam.getDefault();
+        // TODO: this is a new one unncessarily when its time to destroy
+
+        // if their only purpose is to end the call, end it
+        if (this.TASK.equals("end")) {
+            webcam.close();
+        }
 
         String name = getName(httpExchange);
         Headers responseHeaders = httpExchange.getResponseHeaders();
@@ -31,9 +45,7 @@ public class Call implements HttpHandler {
             // They can chill with us!
             Map<String, String> map = new HashMap<>();
 
-            // Set up stream
-            Webcam webcam = Webcam.getDefault();
-            WebcamStreamer webStream = new WebcamStreamer(8011, webcam, 1000, true);
+            WebcamStreamer webStream = new WebcamStreamer(8011, webcam, 1000, false);
             webStream.start();
 
             // Add name and link
