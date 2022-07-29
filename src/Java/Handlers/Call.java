@@ -30,6 +30,13 @@ public class Call implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         // First thing's first: are they starting or joining a call?
         String connectionID; // TODO: join or create?
+        switch (this.TASK) {
+            case "end": connectionID = getField(httpExchange, "no"); break; // how to make sure it went through?
+            // TODO: super inefficient way, should just get the data all together
+
+            case "start":
+            default: connectionID = Help.connectionID(); // default is to make a new connection
+        }
         DB database = new DB();
 
         // Set up stream
@@ -40,17 +47,18 @@ public class Call implements HttpHandler {
         if (this.TASK.equals("end")) {
             webcam.close();
             database.dbConnect();
-            database.deleteByID(connectionID); // TODO: this isnt real yet
+            database.deleteByID(connectionID);
             database.dbConnect();
         }
 
-        String name = getName(httpExchange);
+        String name = getField(httpExchange, "name");
         Headers responseHeaders = httpExchange.getResponseHeaders();
 
         if (name != null) {
             // They can chill with us!
             Map<String, String> map = new HashMap<>();
             int port = Help.generatePortNumber();
+            System.out.println(name + " will be on port " + port);
 
             WebcamStreamer webStream = new WebcamStreamer(port, webcam, 1000, false);
             webStream.start();
@@ -64,7 +72,8 @@ public class Call implements HttpHandler {
 
             // Add name and link
             map.put("name", name);
-            map.put("link", "http://localhost:8001/"+connectionID);
+            map.put("port", Integer.toString(port));
+            map.put("no", connectionID);
 
             // Send response
             Help.respond(httpExchange, "call", map);
@@ -79,17 +88,18 @@ public class Call implements HttpHandler {
 
     }
 
-    private String getName(HttpExchange httpExchange) throws IOException {
+    private String getField(HttpExchange httpExchange, String field) throws IOException {
+        // TODO: just changed this from finding name, still works?
         InputStream in = httpExchange.getRequestBody();
         try {
             String text = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            if (text.contains("name")) {
+            if (text.contains(field)) {
                 String[] array = text.split(","); // TODO: is this how multiple posts are sent?
                 for (String a : array) {
                     String[] equals = a.split("=");
-                    if (Objects.equals(equals[0], "name")) {
+                    if (Objects.equals(equals[0], field)) {
                         if (equals.length == 1) {
-                            // to get here, they didn't submit a name,
+                            // to get here, they didn't submit a "field",
                             // but we should have captured this earlier
                             return null;
                         }
