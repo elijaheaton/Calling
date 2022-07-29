@@ -14,6 +14,9 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 8001), 0);
+        DB database = new DB();
+        database.dbConnect(); // connect
+        database.initializeDB(); // make sure table exists
 
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         server.createContext("/", new Else());

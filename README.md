@@ -5,11 +5,21 @@ someone online.
 
 ## How
 
-#### Dependencies: webcam-capture:0.3.2 ; slf4j-jdk14:1.7.36
+#### Dependencies: webcam-capture:0.3.2 ; slf4j-jdk14:1.7.36 ; postgresql:42.4.0
 
 1. In terminal, type ```git clone https://github.com/elijaheaton/Calling.git ```
-2. Open in IntelliJ and add dependencies
-3. Run Server.java
+2. Set up a postgres user (with the password 'anunguessablepassword' when prompted):
+   ```
+   sudo -i -u postgres
+   createuser caller -P 
+   createdb calling
+   psql
+   GRANT ALL PRIVILEGES ON DATABASE calling TO caller;
+   \q 
+   exit
+   ```
+3. Open in IntelliJ and add dependencies
+4. Run Server.java
 
 ## Why
 
