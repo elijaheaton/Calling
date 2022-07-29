@@ -1,5 +1,6 @@
 package Java.Handlers;
 
+import Java.DB;
 import Java.Help;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -28,14 +29,19 @@ public class Call implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         // First thing's first: are they starting or joining a call?
+        String connectionID; // TODO: join or create?
+        DB database = new DB();
 
         // Set up stream
         Webcam webcam = Webcam.getDefault();
-        // TODO: this is a new one unncessarily when its time to destroy
+        // TODO: this is a new one unncessarily when its time to destroy?
 
         // if their only purpose is to end the call, end it
         if (this.TASK.equals("end")) {
             webcam.close();
+            database.dbConnect();
+            database.deleteByID(connectionID); // TODO: this isnt real yet
+            database.dbConnect();
         }
 
         String name = getName(httpExchange);
@@ -44,13 +50,21 @@ public class Call implements HttpHandler {
         if (name != null) {
             // They can chill with us!
             Map<String, String> map = new HashMap<>();
+            int port = Help.generatePortNumber();
 
-            WebcamStreamer webStream = new WebcamStreamer(8011, webcam, 1000, false);
+            WebcamStreamer webStream = new WebcamStreamer(port, webcam, 1000, false);
             webStream.start();
+
+            // add to database
+            // TODO: check with database before adding
+            database.dbConnect();
+            connectionID = Help.connectionID();
+            database.insertConnection(connectionID, name, port);
+            database.dbDisconnect(); // TODO: connection and disconnection should be inherent in other tasks
 
             // Add name and link
             map.put("name", name);
-            map.put("link", "http://localhost:8001/");
+            map.put("link", "http://localhost:8001/"+connectionID);
 
             // Send response
             Help.respond(httpExchange, "call", map);

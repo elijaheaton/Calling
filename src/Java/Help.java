@@ -6,9 +6,30 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class Help {
+
+    /**
+     * Connection name generator, url safe
+     * @return the uuid connection name
+     */
+    public static String connectionID() {
+        UUID uuid =UUID.randomUUID();
+        return uuid.toString();
+    }
+
+    /**
+     * Random number generator to connect users to video streaming
+     * @return the connection port, ranging from 8002 to 8999
+     */
+    public static int generatePortNumber() {
+        Random random = new Random();
+        return random.nextInt(998) + 8002; // 8002-8999
+        // TODO: what if this is already used?
+    }
 
     /**
      * Generic response generators with possibility to replace text in the html

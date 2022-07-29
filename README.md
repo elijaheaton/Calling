@@ -1,7 +1,7 @@
 # Calling
 
 A website I'm working on that will allow you to video call 
-someone online.
+someone online. [Only tested in Ubuntu.]
 
 ## How
 

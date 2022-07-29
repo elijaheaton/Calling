@@ -17,6 +17,7 @@ public class Server {
         DB database = new DB();
         database.dbConnect(); // connect
         database.initializeDB(); // make sure table exists
+        database.dbDisconnect(); // shut down until needed again
 
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         server.createContext("/", new Else());
